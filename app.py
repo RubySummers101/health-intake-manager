@@ -1,6 +1,40 @@
+import json
+import os
 from patient import Patient
 from symptom_entry import SymptomEntry
 from health_log import HealthLog
+
+DATA_FILE = "health_data.json"
+
+def save_data(patient, log):
+    data = {
+        "patient": {
+            "name": patient.name,
+            "age": patient.age,
+            "gender": patient.gender
+        },
+        "entries": [entry.to_dict() for entry in log.entries]
+    }
+    with open(DATA_FILE, "w") as f:
+        json.dump(data, f, indent=4)
+    print("Data saved to file.")
+
+def load_data():
+    if not os.path.exists(DATA_FILE):
+        return None, None
+
+    with open(DATA_FILE, "r") as f:
+        data = json.load(f)
+
+    p = data["patient"]
+    patient = Patient(p["name"], p["age"], p["gender"])
+
+    log = HealthLog(patient)
+    for entry_data in data["entries"]:
+        log.add_entry(SymptomEntry.from_dict(entry_data))
+
+    print("Data loaded from file.")
+    return patient, log
 
 def get_gender_input():
     valid_genders = {
@@ -27,9 +61,14 @@ def create_patient():
     patient = Patient(name, age, gender)
     return patient
 
-# Create the patient and their health log
-patient = create_patient()
-log = HealthLog(patient)
+# Try to load saved data
+patient, log = load_data()
+
+# If no data found, prompt to create a new profile
+if not patient:
+    patient = create_patient()
+    log = HealthLog(patient)
+
 
 def show_menu():
     print("\n What would you like to do?")
@@ -53,6 +92,7 @@ while True:
         log.print_log()
 
     elif choice == "3":
+        save_data(patient, log)
         print("Exiting. Take care!")
         break
 
