@@ -3,6 +3,7 @@ import os
 from patient import Patient
 from symptom_entry import SymptomEntry
 from health_log import HealthLog
+from journal_entry import JournalEntry
 
 DATA_FILE = "health_data.json"
 
@@ -63,6 +64,7 @@ def create_patient():
 
 # Try to load saved data
 patient, log = load_data()
+journal_entries = []
 
 # If no data found, prompt to create a new profile
 if not patient:
@@ -74,11 +76,13 @@ def show_menu():
     print("\n What would you like to do?")
     print("1. Add a new symptom entry")
     print("2. View health log")
-    print("3. Exit")
+    print("3. Add a journal entry")
+    print("4. View journal entries")
+    print("5. Exit")
 
 while True:
     show_menu()
-    choice = input("Enter your choice (1-3): ")
+    choice = input("Enter your choice (1-5): ")
 
     if choice == "1":
         symptom = input("Symptom name: ")
@@ -86,16 +90,32 @@ while True:
         note = input("Optional note: ")
         entry = SymptomEntry(symptom, severity, note)
         log.add_entry(entry)
-        print("Symptom added!")
+        print(f"Symptom added for patient: {patient.name}")
 
     elif choice == "2":
         log.print_log()
 
     elif choice == "3":
-        save_data(patient, log)
-        print("Exiting. Take care!")
+        mood = int(input("Mood (1-10): "))
+        sleep_hours = float(input("Hours Slept: "))
+        notes = input("Additional notes: ")
+        journal_entry = JournalEntry(mood, sleep_hours, notes)
+        journal_entries.append(journal_entry)
+        print("Journal entry added!")
+
+    elif choice == "4":
+        if journal_entries:
+            print("\nJournal Entries: \n----------------")
+            for entry in journal_entries:
+                print(entry)
+        else:
+            print("No journal entries found.")
+
+    elif choice == "5":
+        save_data(patient, log) # Will save patient and symptom entries
+        print("Data saved. Exiting. Take care!")
         break
 
     else:
-        print("Invalid choice. Please enter 1, 2, or 3.")
+        print("Invalid choice. Please enter 1-5.")
 

@@ -8,5 +8,8 @@ class HealthLog:
 
     def print_log(self):
         print(f"--- Health Log for {self.patient.name} ---")
-        for entry in self.entries:
-            print(entry)
+        if not self.entries:
+            print("No symptom entries found.")
+        else:
+            for entry in self.entries:
+                print(entry)
