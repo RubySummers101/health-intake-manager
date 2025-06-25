@@ -69,6 +69,18 @@ def create_patient():
 # Main Logic
 patient, log, journal_entries = load_data()
 
+if patient:
+    confirm = input(f"Welcome back, {patient.name}! Is this you (Y/N): ").strip().lower()
+    if confirm != "y":
+        patient = create_patient()
+        log = HealthLog(patient)
+        journal_entries = []
+
+else:
+    patient = create_patient()
+    log = HealthLog(patient)
+    journal_entries = []
+
 if not patient:
     patient = create_patient()
     log = HealthLog(patient)

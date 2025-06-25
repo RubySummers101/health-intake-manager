@@ -1,29 +1,23 @@
 {
     "patient": {
-        "name": "Brenden Riley",
+        "name": "Ruby Summers",
         "age": 38,
         "gender": "Female"
     },
     "entries": [
         {
-            "symptom": "headache",
-            "severity": 3,
-            "note": "Throbbing pain behind right eye.",
-            "timestamp": "2025-06-20T16:26:54.650502"
-        },
-        {
-            "symptom": "Joint Pain",
+            "symptom": "Dry Eyes",
             "severity": 4,
-            "note": "Inflamed pain in left shoulder and right hip. ",
-            "timestamp": "2025-06-20T16:27:39.409864"
+            "note": "Used refresh eye drops to resolve issue but it persists. ",
+            "timestamp": "2025-06-25T01:02:51.511797"
         }
     ],
     "journal_entries": [
         {
             "date": "2025-06-25",
-            "mood": 6,
-            "sleep_hours": 5.0,
-            "notes": "Did not sleep well so I had some coffee. "
+            "mood": 8,
+            "sleep_hours": 7.0,
+            "notes": "Eyes are dry all the time and uses eye drops multiple times a day. "
         }
     ]
 }
