@@ -58,22 +58,20 @@ def create_patient():
     name = input("Enter patient name: ")
     age = int(input("Enter patient age: "))
     gender = get_gender_input()
-
     patient = Patient(name, age, gender)
     return patient
 
-# Try to load saved data
+# Main Logic: Try to load saved data
 patient, log = load_data()
 journal_entries = []
 
-# If no data found, prompt to create a new profile
+# If no saved data, create new patient
 if not patient:
     patient = create_patient()
     log = HealthLog(patient)
 
-
 def show_menu():
-    print("\n What would you like to do?")
+    print("\nWhat would you like to do?")
     print("1. Add a new symptom entry")
     print("2. View health log")
     print("3. Add a journal entry")
