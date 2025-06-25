@@ -17,5 +17,13 @@
             "note": "Inflamed pain in left shoulder and right hip. ",
             "timestamp": "2025-06-20T16:27:39.409864"
         }
+    ],
+    "journal_entries": [
+        {
+            "date": "2025-06-25",
+            "mood": 6,
+            "sleep_hours": 5.0,
+            "notes": "Did not sleep well so I had some coffee. "
+        }
     ]
 }

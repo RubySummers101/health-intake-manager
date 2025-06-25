@@ -7,14 +7,15 @@ from journal_entry import JournalEntry
 
 DATA_FILE = "health_data.json"
 
-def save_data(patient, log):
+def save_data(patient, log, journal_entries):
     data = {
         "patient": {
             "name": patient.name,
             "age": patient.age,
             "gender": patient.gender
         },
-        "entries": [entry.to_dict() for entry in log.entries]
+        "entries": [entry.to_dict() for entry in log.entries],
+        "journal_entries": [entry.to_dict() for entry in journal_entries]
     }
     with open(DATA_FILE, "w") as f:
         json.dump(data, f, indent=4)
@@ -22,8 +23,7 @@ def save_data(patient, log):
 
 def load_data():
     if not os.path.exists(DATA_FILE):
-        return None, None
-
+        return None, None, []
     with open(DATA_FILE, "r") as f:
         data = json.load(f)
 
@@ -31,11 +31,16 @@ def load_data():
     patient = Patient(p["name"], p["age"], p["gender"])
 
     log = HealthLog(patient)
-    for entry_data in data["entries"]:
+
+    for entry_data in data.get("entries", []):
         log.add_entry(SymptomEntry.from_dict(entry_data))
 
+    journal_entries = []
+    for j_entry_data in data.get("journal_entries", []):
+        journal_entries.append(JournalEntry.from_dict(j_entry_data))
+
     print("Data loaded from file.")
-    return patient, log
+    return patient, log, journal_entries
 
 def get_gender_input():
     valid_genders = {
@@ -61,14 +66,13 @@ def create_patient():
     patient = Patient(name, age, gender)
     return patient
 
-# Main Logic: Try to load saved data
-patient, log = load_data()
-journal_entries = []
+# Main Logic
+patient, log, journal_entries = load_data()
 
-# If no saved data, create new patient
 if not patient:
     patient = create_patient()
     log = HealthLog(patient)
+    journal_entries = []
 
 def show_menu():
     print("\nWhat would you like to do?")
@@ -99,21 +103,20 @@ while True:
         notes = input("Additional notes: ")
         journal_entry = JournalEntry(mood, sleep_hours, notes)
         journal_entries.append(journal_entry)
-        print("Journal entry added!")
+        print("Journal entry added.")
 
     elif choice == "4":
         if journal_entries:
-            print("\nJournal Entries: \n----------------")
+            print("\nJournal Entries:\n----------------")
             for entry in journal_entries:
                 print(entry)
         else:
             print("No journal entries found.")
 
     elif choice == "5":
-        save_data(patient, log) # Will save patient and symptom entries
+        save_data(patient, log, journal_entries)
         print("Data saved. Exiting. Take care!")
         break
 
     else:
         print("Invalid choice. Please enter 1-5.")
-
