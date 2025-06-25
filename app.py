@@ -57,21 +57,19 @@ def create_patient():
     name = input("Enter patient name: ")
     age = int(input("Enter patient age: "))
     gender = get_gender_input()
-
     patient = Patient(name, age, gender)
     return patient
 
-# Try to load saved data
+# Main Logic: Try to load saved data
 patient, log = load_data()
 
-# If no data found, prompt to create a new profile
+# If no saved data, create new patient
 if not patient:
     patient = create_patient()
     log = HealthLog(patient)
 
-
 def show_menu():
-    print("\n What would you like to do?")
+    print("\nWhat would you like to do?")
     print("1. Add a new symptom entry")
     print("2. View health log")
     print("3. Exit")
@@ -86,7 +84,7 @@ while True:
         note = input("Optional note: ")
         entry = SymptomEntry(symptom, severity, note)
         log.add_entry(entry)
-        print("Symptom added!")
+        print(f"Symptom added for patient: {patient.name}")
 
     elif choice == "2":
         log.print_log()
@@ -98,4 +96,3 @@ while True:
 
     else:
         print("Invalid choice. Please enter 1, 2, or 3.")
-
