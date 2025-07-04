@@ -79,7 +79,7 @@ def create_patient():
             print("Please enter a valid number for age.")
             
     gender = get_gender_input()
-    return Patient(name, ago, gender)
+    return Patient(name, age, gender)
 
 # Main Logic
 patient, log, journal_entries = load_data()
