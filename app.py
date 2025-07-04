@@ -81,11 +81,6 @@ else:
     log = HealthLog(patient)
     journal_entries = []
 
-if not patient:
-    patient = create_patient()
-    log = HealthLog(patient)
-    journal_entries = []
-
 def show_menu():
     print("\nWhat would you like to do?")
     print("1. Add a new symptom entry")
@@ -100,9 +95,11 @@ while True:
 
     if choice == "1":
         symptom = input("Symptom name: ")
-    try:
-        severity = int(input("Severity (1-10): "))
-    except ValueError:
+        try:
+            severity = int(input("Severity (1-10): "))
+            if not 1 <= severity <=10:
+                print("Severity must be between 1 and 10.")
+        except ValueError:
             print("Please enter a number between 1 and 10.")
             continue
         
