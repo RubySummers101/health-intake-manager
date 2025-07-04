@@ -25,27 +25,27 @@ def load_data():
     if not os.path.exists(DATA_FILE):
         return None, None, []
 
-try:
-    with open(DATA_FILE, "r") as f:
-        data = json.load(f)
+    try:
+        with open(DATA_FILE, "r") as f:
+            data = json.load(f)
 
-    p = data["patient"]
-    patient = Patient(p["name"], p["age"], p["gender"])
-    log = HealthLog(patient)
+        p = data["patient"]
+        patient = Patient(p["name"], p["age"], p["gender"])
+        log = HealthLog(patient)
 
-    for entry_data in data.get("entries", []):
+        for entry_data in data.get("entries", []):
         log.add_entry(SymptomEntry.from_dict(entry_data))
 
-    journal_entries = []
-    for j_entry_data in data.get("journal_entries", []):
-        journal_entries.append(JournalEntry.from_dict(j_entry_data))
+        journal_entries = []
+        for j_entry_data in data.get("journal_entries", []):
+            journal_entries.append(JournalEntry.from_dict(j_entry_data))
 
-    print("Data loaded from file.")
-    return patient, log, journal_entries
+        print("Data loaded from file.")
+        return patient, log, journal_entries
  
-except (json.JSONDecodeError, KeyError, TypeError) as e:
-    print("Warning: Failed to load data. Starting fresh.")
-    return None, None, []
+    except (json.JSONDecodeError, KeyError, TypeError) as e:
+        print("Warning: Failed to load data. Starting fresh.")
+        return None, None, []
 
 def get_gender_input():
     valid_genders = {
