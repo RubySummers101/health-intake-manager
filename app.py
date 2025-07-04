@@ -24,12 +24,13 @@ def save_data(patient, log, journal_entries):
 def load_data():
     if not os.path.exists(DATA_FILE):
         return None, None, []
+
+try:
     with open(DATA_FILE, "r") as f:
         data = json.load(f)
 
     p = data["patient"]
     patient = Patient(p["name"], p["age"], p["gender"])
-
     log = HealthLog(patient)
 
     for entry_data in data.get("entries", []):
@@ -41,6 +42,10 @@ def load_data():
 
     print("Data loaded from file.")
     return patient, log, journal_entries
+ 
+except (json.JSONDecodeError, KeyError, TypeError) as e:
+    print("Warning: Failed to load data. Starting fresh.")
+    return None, None, []
 
 def get_gender_input():
     valid_genders = {
@@ -60,11 +65,21 @@ def get_gender_input():
 
 def create_patient():
     print("Let's create a new patient profile.")
-    name = input("Enter patient name: ")
-    age = int(input("Enter patient age: "))
+    while True:
+        name = input("Enter patient name: ").strip()
+        if name:
+            break
+        print("Name cannot be empty.")
+
+    while True:
+        try:
+            age = int(input("Enter patient age: "))
+            break
+        except ValueError:
+            print("Please enter a valid number for age.")
+            
     gender = get_gender_input()
-    patient = Patient(name, age, gender)
-    return patient
+    return Patient(name, ago, gender)
 
 # Main Logic
 patient, log, journal_entries = load_data()
@@ -99,6 +114,7 @@ while True:
             severity = int(input("Severity (1-10): "))
             if not 1 <= severity <=10:
                 print("Severity must be between 1 and 10.")
+                continue
         except ValueError:
             print("Please enter a number between 1 and 10.")
             continue
