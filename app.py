@@ -34,7 +34,7 @@ def load_data():
         log = HealthLog(patient)
 
         for entry_data in data.get("entries", []):
-        log.add_entry(SymptomEntry.from_dict(entry_data))
+            log.add_entry(SymptomEntry.from_dict(entry_data))
 
         journal_entries = []
         for j_entry_data in data.get("journal_entries", []):
