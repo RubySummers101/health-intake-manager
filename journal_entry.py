@@ -1,21 +1,21 @@
 from datetime import datetime
 
 class JournalEntry:
-    def __init__(self, mood, sleep_hours, notes="", date=None):
-        self.date = date or datetime.now().date()
+    def __init__(self, mood, sleep_hours, notes="", timestamp=None):
+        self.timestamp = timestamp or datetime.now()
         self.mood = mood
         self.sleep_hours = sleep_hours
         self.notes = notes
 
     def __str__(self):
         return (
-            f"{self.date} | Mood: {self.mood}/10 | Sleep: {self.sleep_hours}h | Notes: {self.notes}"
+             f"{self.timestamp.strftime('%Y-%m-%d %H:%M')} | Mood: {self.mood}/10 | Sleep: {self.sleep_hours}h | Notes: {self.notes}"
         )
 
     def to_dict(self):
         """Convert this entry into a JSON-friendly dict."""
         return {
-            "date": self.date.isoformat(),
+            "timestamp": self.timestamp.isoformat(),
             "mood": self.mood,
             "sleep_hours": self.sleep_hours,
             "notes": self.notes
@@ -28,5 +28,5 @@ class JournalEntry:
             mood=data["mood"],
             sleep_hours=data["sleep_hours"],
             notes=data.get("notes", ""),
-            date=datetime.fromisoformat(data["date"]).date()
+            timestamp=datetime.fromisoformat(data["timestamp"])
         )

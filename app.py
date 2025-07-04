@@ -1,5 +1,6 @@
 import json
 import os
+import matplotlib.pyplot as plt
 from patient import Patient
 from symptom_entry import SymptomEntry
 from health_log import HealthLog
@@ -96,6 +97,69 @@ else:
     log = HealthLog(patient)
     journal_entries = []
 
+def plot_symptom_history(log):
+    if not log.entries:
+        print("No symptom entries to plot.")
+        return
+
+    # Group symptoms by name
+    symptom_dict = {}
+    for entry in log.entries:
+        symptom_dict.setdefault(entry.symptom.lower(), []).append(entry)
+
+    for symptom, entries in symptom_dict.items():
+        dates = [e.timestamp for e in entries]
+        severities = [e.severity for e in entries]
+
+        plt.figure()
+        plt.plot(dates, severities, marker='o')
+        plt.title(f"{symptom.title()} Severity Over Time")
+        plt.xlabel("Date")
+        plt.ylabel("Severity (1–10)")
+        plt.xticks(rotation=45)
+        plt.tight_layout()
+        plt.grid(True)
+
+    filename = f"{symptom.lower().replace(' ', '_')}_severity_plot.png"
+    plt.savefig(filename)
+    print(f"Plot saved as {filename}")
+
+def plot_journal_data(journal_entries):
+    if not journal_entries:
+        print("No journal entries to plot.")
+        return
+
+    dates = [entry.timestamp for entry in journal_entries]
+    moods = [entry.mood for entry in journal_entries]
+    sleep_hours = [entry.sleep_hours for entry in journal_entries]
+
+    # Plot mood
+    plt.figure()
+    plt.plot(dates, moods, marker='o', label='Mood (1–10)')
+    plt.title("Mood Over Time")
+    plt.xlabel("Date")
+    plt.ylabel("Mood")
+    plt.xticks(rotation=45)
+    plt.grid(True)
+    plt.tight_layout()
+    mood_filename = "mood_plot.png"
+    plt.savefig(mood_filename)
+    print(f"Mood plot saved as {mood_filename}")
+
+    # Plot sleep
+    plt.figure()
+    plt.plot(dates, sleep_hours, marker='s', label='Hours Slept')
+    plt.title("Sleep Hours Over Time")
+    plt.xlabel("Date")
+    plt.ylabel("Hours Slept")
+    plt.xticks(rotation=45)
+    plt.grid(True)
+    plt.tight_layout()
+    sleep_filename = "sleep_plot.png"
+    plt.savefig(sleep_filename)
+    print(f"Sleep plot saved as {sleep_filename}")
+
+
 def show_menu():
     print("\nWhat would you like to do?")
     print("1. Add a new symptom entry")
@@ -103,10 +167,12 @@ def show_menu():
     print("3. Add a journal entry")
     print("4. View journal entries")
     print("5. Exit")
+    print("6. Plot symptom history")
+    print("7. Plot mood and sleep data")
 
 while True:
     show_menu()
-    choice = input("Enter your choice (1-5): ")
+    choice = input("Enter your choice (1-7): ")
 
     if choice == "1":
         symptom = input("Symptom name: ")
@@ -153,5 +219,10 @@ while True:
         print("Data saved. Exiting. Take care!")
         break
 
+    elif choice == "6":
+        plot_symptom_history(log)
+
+    elif choice == "7":
+        plot_journal_data(journal_entries)
     else:
-        print("Invalid choice. Please enter 1-5.")
+        print("Invalid choice. Please enter 1-7.")

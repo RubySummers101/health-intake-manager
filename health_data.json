@@ -6,18 +6,24 @@
     },
     "entries": [
         {
-            "symptom": "Dry Eyes",
+            "symptom": "Headache",
             "severity": 4,
-            "note": "Used refresh eye drops to resolve issue but it persists. ",
-            "timestamp": "2025-06-25T01:02:51.511797"
+            "note": "Woke up feeling dehydrated.",
+            "timestamp": "2025-07-04T13:36:57.179415"
+        },
+        {
+            "symptom": "Upper Back pain",
+            "severity": 4,
+            "note": "Upper back pain between shoulder blades",
+            "timestamp": "2025-07-04T13:37:39.668026"
         }
     ],
     "journal_entries": [
         {
-            "date": "2025-06-25",
-            "mood": 8,
+            "timestamp": "2025-07-04T13:37:13.069945",
+            "mood": 5,
             "sleep_hours": 7.0,
-            "notes": "Eyes are dry all the time and uses eye drops multiple times a day. "
+            "notes": "Feeling even. "
         }
     ]
 }
