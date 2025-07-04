@@ -100,7 +100,12 @@ while True:
 
     if choice == "1":
         symptom = input("Symptom name: ")
+    try:
         severity = int(input("Severity (1-10): "))
+    except ValueError:
+            print("Please enter a number between 1 and 10.")
+            continue
+        
         note = input("Optional note: ")
         entry = SymptomEntry(symptom, severity, note)
         log.add_entry(entry)
@@ -110,8 +115,13 @@ while True:
         log.print_log()
 
     elif choice == "3":
-        mood = int(input("Mood (1-10): "))
-        sleep_hours = float(input("Hours Slept: "))
+        try:
+            mood = int(input("Mood (1-10): "))
+            sleep_hours = float(input("Hours Slept: "))
+        except ValueError:
+            print("Invalid Entry. Please enter numbers for mood and sleep.")
+            continue
+            
         notes = input("Additional notes: ")
         journal_entry = JournalEntry(mood, sleep_hours, notes)
         journal_entries.append(journal_entry)
